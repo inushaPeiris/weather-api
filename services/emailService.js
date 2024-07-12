@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const dotenv = require('dotenv');
 dotenv.config();
 
-
+// Create a transporter object using the default SMTP transport
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -11,9 +11,8 @@ const transporter = nodemailer.createTransport({
     }
 });
 
+// Send an email with the weather report to the user
 const sendWeatherReport = async (email, weatherReport) => {
-    console.log("process.env.MONGODB_URI: ", process.env.GMAIL_USER);
-
     const mailOptions = {
         from: process.env.GMAIL_USER,
         to: email,
@@ -21,7 +20,10 @@ const sendWeatherReport = async (email, weatherReport) => {
         text: weatherReport
     };
 
-    await transporter.sendMail(mailOptions);
+    await transporter.sendMail(mailOptions)
+    .catch(error => {
+        console.error(error);
+    });
 };
 
 module.exports = { sendWeatherReport };

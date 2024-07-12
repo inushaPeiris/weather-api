@@ -43,8 +43,9 @@ router.get('/users/weather/:email', async (req, res) => {
     try {
         const user = await User.findOne({ email });
         if (!user) return res.status(404).json({ error: 'User not found' });
-        res.status(200).json(user.weatherData);
-        console.log("res: ", user.weatherData);
+        const weatherData = await fetchWeatherData(user.location);
+        res.status(200).json(weatherData);
+        console.log("res: ", weatherData);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }

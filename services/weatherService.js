@@ -8,7 +8,10 @@ dotenv.config();
 const fetchWeatherData = async (location) => {
     const apiKey = process.env.OPENWEATHERMAP_API_KEY;
     const url = `http://api.openweathermap.org/data/2.5/weather?q=${location}&appid=${apiKey}`;
-    const response = await axios.get(url);
+    const response = await axios.get(url)
+        .catch(error => {
+            console.error(error);
+        });
     return response.data;
 };
 
@@ -27,6 +30,9 @@ const generateWeatherReport = async (prompt) => {
         top_p: 1,
         frequency_penalty: 0,
         presence_penalty: 0,
+    })
+    .catch(error => {
+        console.error(error);
     });
     return response.data.choices[0].text;
 };
