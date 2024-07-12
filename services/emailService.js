@@ -21,9 +21,10 @@ const sendWeatherReport = async (email, weatherReport) => {
     };
 
     await transporter.sendMail(mailOptions)
-    .catch(error => {
-        console.error(error);
-    });
+        .catch(error => {
+            console.error(error);
+            throw new Error('Error while sending email', error);
+        });
 };
 
 module.exports = { sendWeatherReport };

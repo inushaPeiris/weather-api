@@ -17,7 +17,7 @@ const getCityName = async (latitude, longitude) => {
         return city;
     } catch (error) {
         console.error(error);
-        throw new Error('Error while fetching city name');
+        throw new Error('Error while fetching city name', error);
     }
 };
 

@@ -7,13 +7,11 @@ const { getCityName } = require('../services/locationService');
 
 // Route to store user details
 router.post('/users', async (req, res) => {
-    console.log("router called")
     const { email, location } = req.body;
     try {
         const weatherData = await fetchWeatherData(location);
         const user = new User({ email, location, weatherData: { date: new Date(), data: weatherData } });
         await user.save();
-        console.log("res: ", user);
         res.status(201).json(user);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -30,7 +28,6 @@ router.put('/users/update-location/:email', async (req, res) => {
             location, weatherData:
                 { date: new Date(), data: weatherData }
         }, { new: true });
-        console.log("res: ", user);
         res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ error: error.message });
@@ -45,7 +42,6 @@ router.get('/users/weather/:email', async (req, res) => {
         if (!user) return res.status(404).json({ error: 'User not found' });
         const weatherData = await fetchWeatherData(user.location);
         res.status(200).json(weatherData);
-        console.log("res: ", weatherData);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
@@ -57,7 +53,6 @@ router.get('/locations', async (req, res) => {
     try {
         const location = await getCityName(latitude, longitude);
         res.status(200).json(location);
-        console.log("res: ", location);
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
